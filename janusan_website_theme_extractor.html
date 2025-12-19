@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Brand Analysis Demo</title>
+    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <p style="font-size:12px;color:#999;"> This project is a self-contained demo created for illustrative purposes only.</p>
+    <div id="root"></div>
+    <!-- Demo uses runtime Babel for portability; production version would be precompiled -->
+    <script type="text/babel">
+        const { useState } = React;
+        const brandData = {
+            "colors": {
+                "primary": "#2C3E50",
+                "secondary": "#FFFFFF",
+                "accent": "#3498DB"
+            },
+            "typography": {
+                "heading": "system-ui",
+                "body": "system-ui"
+            },
+            "layout": "minimal-clean",
+            "spacing": "comfortable"
+        };
+
+        function App() {
+            const [activeTab, setActiveTab] = useState('palette');
+
+            return (
+                <div style={{ minHeight: '100vh', background: '#f5f5f5' }}>
+                    {/* Header */}
+                    <div style={{
+                        background: 'white',
+                        padding: '24px',
+                        borderBottom: '1px solid #e0e0e0',
+                        marginBottom: '32px'
+                    }}>
+                        <h1 style={{
+                            fontSize: '28px',
+                            fontWeight: '700',
+                            color: '#1a1a1a',
+                            marginBottom: '8px'
+                        }}>Portfolio Brand Analysis</h1>
+                        <p style={{ color: '#666', fontSize: '14px' }}>
+                            Sample brand extraction and visualization demo
+                        </p>
+                    </div>
+
+                    {/* Navigation */}
+                    <div style={{
+                        maxWidth: '1200px',
+                        margin: '0 auto',
+                        padding: '0 24px',
+                        marginBottom: '32px'
+                    }}>
+                        <div style={{ display: 'flex', gap: '12px', borderBottom: '2px solid #e0e0e0' }}>
+                            {['palette', 'json', 'mockup'].map(tab => (
+                                <button
+                                    key={tab}
+                                    onClick={() => setActiveTab(tab)}
+                                    style={{
+                                        padding: '12px 24px',
+                                        background: 'none',
+                                        border: 'none',
+                                        borderBottom: activeTab === tab ? `3px solid ${brandData.colors.primary}` : '3px solid transparent',
+                                        color: activeTab === tab ? brandData.colors.primary : '#666',
+                                        fontWeight: activeTab === tab ? '600' : '400',
+                                        cursor: 'pointer',
+                                        fontSize: '15px',
+                                        marginBottom: '-2px',
+                                        textTransform: 'capitalize'
+                                    }}
+                                >
+                                    {tab}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Content */}
+                    <div style={{
+                        maxWidth: '1200px',
+                        margin: '0 auto',
+                        padding: '0 24px 48px'
+                    }}>
+                        {activeTab === 'palette' && <ColorPalette />}
+                        {activeTab === 'json' && <JSONDisplay />}
+                        {activeTab === 'mockup' && <MockupLanding />}
+                    </div>
+                </div>
+            );
+        }
+
+        function ColorPalette() {
+            return (
+                <div>
+                    {/* Color Swatches */}
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                        gap: '24px',
+                        marginBottom: '48px'
+                    }}>
+                        {Object.entries(brandData.colors).map(([name, hex]) => (
+                            <div key={name} style={{
+                                background: 'white',
+                                borderRadius: '12px',
+                                overflow: 'hidden',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+                            }}>
+                                <div style={{
+                                    height: '160px',
+                                    background: hex,
+                                    border: hex === '#FFFFFF' ? '1px solid #e0e0e0' : 'none'
+                                }}></div>
+                                <div style={{ padding: '20px' }}>
+                                    <h3 style={{
+                                        fontSize: '18px',
+                                        fontWeight: '600',
+                                        textTransform: 'capitalize',
+                                        marginBottom: '8px',
+                                        color: '#1a1a1a'
+                                    }}>{name}</h3>
+                                    <p style={{
+                                        fontSize: '14px',
+                                        color: '#666',
+                                        fontFamily: 'monospace',
+                                        background: '#f5f5f5',
+                                        padding: '8px 12px',
+                                        borderRadius: '6px',
+                                        display: 'inline-block'
+                                    }}>{hex}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Typography & Layout Info */}
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                        gap: '24px'
+                    }}>
+                        <div style={{
+                            background: 'white',
+                            padding: '32px',
+                            borderRadius: '12px',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+                        }}>
+                            <h3 style={{
+                                fontSize: '20px',
+                                fontWeight: '600',
+                                marginBottom: '20px',
+                                color: '#1a1a1a'
+                            }}>Typography</h3>
+                            <div style={{ marginBottom: '16px' }}>
+                                <p style={{ color: '#666', fontSize: '13px', marginBottom: '4px' }}>Heading Font</p>
+                                <p style={{ fontSize: '18px', fontWeight: '600' }}>{brandData.typography.heading}</p>
+                            </div>
+                            <div>
+                                <p style={{ color: '#666', fontSize: '13px', marginBottom: '4px' }}>Body Font</p>
+                                <p style={{ fontSize: '16px' }}>{brandData.typography.body}</p>
+                            </div>
+                        </div>
+
+                        <div style={{
+                            background: 'white',
+                            padding: '32px',
+                            borderRadius: '12px',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+                        }}>
+                            <h3 style={{
+                                fontSize: '20px',
+                                fontWeight: '600',
+                                marginBottom: '20px',
+                                color: '#1a1a1a'
+                            }}>Layout & Spacing</h3>
+                            <div style={{ marginBottom: '16px' }}>
+                                <p style={{ color: '#666', fontSize: '13px', marginBottom: '4px' }}>Layout Style</p>
+                                <p style={{ fontSize: '18px', fontWeight: '600', textTransform: 'capitalize' }}>
+                                    {brandData.layout}
+                                </p>
+                            </div>
+                            <div>
+                                <p style={{ color: '#666', fontSize: '13px', marginBottom: '4px' }}>Spacing</p>
+                                <p style={{ fontSize: '16px', textTransform: 'capitalize' }}>{brandData.spacing}</p>
+                            </div>
+                        </div>
+
+                        <div style={{
+                            background: 'white',
+                            padding: '32px',
+                            borderRadius: '12px',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+                        }}>
+                            <h3 style={{
+                                fontSize: '20px',
+                                fontWeight: '600',
+                                marginBottom: '20px',
+                                color: '#1a1a1a'
+                            }}>Brand Mood</h3>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                {['Professional', 'Technical', 'Clean'].map(mood => (
+                                    <span key={mood} style={{
+                                        background: brandData.colors.primary,
+                                        color: 'white',
+                                        padding: '8px 16px',
+                                        borderRadius: '20px',
+                                        fontSize: '14px',
+                                        fontWeight: '500'
+                                    }}>{mood}</span>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function JSONDisplay() {
+            const [copied, setCopied] = useState(false);
+
+            const copyToClipboard = () => {
+                navigator.clipboard.writeText(JSON.stringify(brandData, null, 2));
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+            };
+
+            return (
+                <div style={{
+                    background: 'white',
+                    borderRadius: '12px',
+                    padding: '32px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+                }}>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: '24px'
+                    }}>
+                        <h3 style={{ fontSize: '20px', fontWeight: '600', color: '#1a1a1a' }}>
+                            Extracted Brand Data (JSON)
+                        </h3>
+                        <button
+                            onClick={copyToClipboard}
+                            style={{
+                                background: copied ? '#4CAF50' : brandData.colors.primary,
+                                color: 'white',
+                                border: 'none',
+                                padding: '10px 20px',
+                                borderRadius: '8px',
+                                fontSize: '14px',
+                                fontWeight: '500',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            {copied ? '✓ Copied!' : 'Copy JSON'}
+                        </button>
+                    </div>
+                    <pre style={{
+                        background: '#1e1e1e',
+                        color: '#d4d4d4',
+                        padding: '24px',
+                        borderRadius: '8px',
+                        overflow: 'auto',
+                        fontSize: '14px',
+                        lineHeight: '1.6',
+                        fontFamily: 'Monaco, Courier, monospace'
+                    }}>
+{JSON.stringify(brandData, null, 2)}
+                    </pre>
+                </div>
+            );
+        }
+
+        function MockupLanding() {
+            return (
+                <div style={{
+                    background: 'white',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.1)'
+                }}>
+                    <div style={{
+                        padding: '16px',
+                        background: '#f5f5f5',
+                        borderBottom: '1px solid #e0e0e0'
+                    }}>
+                        <p style={{ fontSize: '13px', color: '#666', textAlign: 'center' }}>
+                            Landing Page Mockup Using Extracted Brand Colors
+                        </p>
+                    </div>
+                    
+                    {/* Mockup Content */}
+                    <div style={{ background: brandData.colors.secondary }}>
+                        {/* Hero Section */}
+                        <div style={{
+                            background: brandData.colors.primary,
+                            padding: '80px 40px',
+                            textAlign: 'center',
+                            color: 'white'
+                        }}>
+                            <div style={{
+                                maxWidth: '800px',
+                                margin: '0 auto'
+                            }}>
+                                <h1 style={{
+                                    fontSize: '56px',
+                                    fontWeight: '700',
+                                    marginBottom: '24px',
+                                    fontFamily: brandData.typography.heading,
+                                    lineHeight: '1.1'
+                                }}>
+                                    Software Developer
+                                </h1>
+                                <p style={{
+                                    fontSize: '20px',
+                                    marginBottom: '40px',
+                                    opacity: 0.95,
+                                    fontFamily: brandData.typography.body,
+                                    lineHeight: '1.6'
+                                }}>
+                                    Building scalable solutions and leading cloud innovations. 
+                                    Specialized in full-stack development and aviation software systems.
+                                </p>
+                                <button style={{
+                                    background: brandData.colors.accent,
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '18px 48px',
+                                    fontSize: '18px',
+                                    fontWeight: '600',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontFamily: brandData.typography.heading
+                                }}>
+                                    View My Work
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Features Grid */}
+                        <div style={{
+                            padding: '80px 40px',
+                            background: brandData.colors.secondary
+                        }}>
+                            <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+                                <h2 style={{
+                                    fontSize: '42px',
+                                    fontWeight: '700',
+                                    textAlign: 'center',
+                                    marginBottom: '60px',
+                                    color: brandData.colors.primary,
+                                    fontFamily: brandData.typography.heading
+                                }}>
+                                    What I Do
+                                </h2>
+                                
+                                <div style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                                    gap: '32px'
+                                }}>
+                                    {[
+                                        { title: 'Full-Stack Development', desc: 'Building modern web applications with Vue.js, React, Python, and C# .NET' },
+                                        { title: 'Cloud Solutions', desc: 'AWS certified professional experienced in cloud architecture and migration' },
+                                        { title: 'AI/ML Innovation', desc: 'Leveraging machine learning and AI to solve complex problems' }
+                                    ].map((feature, i) => (
+                                        <div key={i} style={{
+                                            background: 'white',
+                                            padding: '32px',
+                                            borderRadius: '8px',
+                                            border: `1px solid #e0e0e0`,
+                                            boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+                                        }}>
+                                            <div style={{
+                                                width: '48px',
+                                                height: '48px',
+                                                background: brandData.colors.accent,
+                                                borderRadius: '8px',
+                                                marginBottom: '20px'
+                                            }}></div>
+                                            <h3 style={{
+                                                fontSize: '22px',
+                                                fontWeight: '600',
+                                                marginBottom: '12px',
+                                                color: brandData.colors.primary,
+                                                fontFamily: brandData.typography.heading
+                                            }}>
+                                                {feature.title}
+                                            </h3>
+                                            <p style={{
+                                                fontSize: '16px',
+                                                color: '#666',
+                                                lineHeight: '1.6',
+                                                fontFamily: brandData.typography.body
+                                            }}>
+                                                {feature.desc}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* CTA Section */}
+                        <div style={{
+                            background: brandData.colors.primary,
+                            padding: '80px 40px',
+                            textAlign: 'center',
+                            color: 'white'
+                        }}>
+                            <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+                                <h2 style={{
+                                    fontSize: '42px',
+                                    fontWeight: '700',
+                                    marginBottom: '20px',
+                                    fontFamily: brandData.typography.heading
+                                }}>
+                                    Let's Build Something Great
+                                </h2>
+                                <p style={{
+                                    fontSize: '18px',
+                                    marginBottom: '32px',
+                                    opacity: 0.95,
+                                    fontFamily: brandData.typography.body
+                                }}>
+                                    Interested in working together? Get in touch to discuss your project.
+                                </p>
+                                <button style={{
+                                    background: brandData.colors.accent,
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '18px 48px',
+                                    fontSize: '18px',
+                                    fontWeight: '600',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontFamily: brandData.typography.heading
+                                }}>
+                                    Contact Me
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+
+    </script>
+</body>
+</html>
